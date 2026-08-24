@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """Domain-neutral record access for the ``dataset`` stage
 
 Measurements are often published as ``{identifier: {property: value}}`` JSON. This module reads

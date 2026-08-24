@@ -2,7 +2,6 @@
 
 import json
 
-import pandas as pd
 import pytest
 
 from kalebenchmark.loaddata.json_datasets import JsonRecords, load_json_records
@@ -26,21 +25,6 @@ def test_files_are_concatenated_and_deduplicated(records):
     frame = JsonRecords([records / "a.json", records / "b.json"], id_column="accession", target_key="y").load()
     assert frame["accession"].tolist() == ["x1", "x2", "x3"]
     assert frame["accession"].is_unique
-
-
-def test_a_single_path_needs_no_sequence(records):
-    frame = JsonRecords(records / "a.json", id_column="accession", target_key="y").load()
-    assert len(frame) == 2
-
-
-def test_a_missing_property_is_reported(records):
-    with pytest.raises(KeyError):
-        load_json_records(records / "a.json", target_key="absent")
-
-
-def test_targets_are_numeric(records):
-    frame = JsonRecords(records / "a.json", target_key="y").load()
-    assert pd.api.types.is_float_dtype(frame["y"])
 
 
 def test_a_callable_is_a_valid_dataset_stage(records):

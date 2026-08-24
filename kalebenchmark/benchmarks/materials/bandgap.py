@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """RealMat-BaG: experimental band gap prediction for semiconductor materials
 
 One discipline, one module. Everything materials-specific that a user selects by name is

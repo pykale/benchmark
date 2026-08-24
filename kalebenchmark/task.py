@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """Official benchmark tracks
 
 A task card fixes only the stages that a leaderboard needs in order to compare

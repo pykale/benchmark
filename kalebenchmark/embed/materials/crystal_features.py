@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """Crystal representations for the ``embed`` stage
 
 Aggregates crystal graphs into fixed-size vectors by delegating to the RealMat-BaG featuriser.

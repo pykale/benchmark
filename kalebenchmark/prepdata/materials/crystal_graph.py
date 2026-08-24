@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """Crystal graph preparation for the ``prepdata`` stage
 
 Turns identifier/target records into crystal graphs by delegating to the RealMat-BaG ``CIFData``

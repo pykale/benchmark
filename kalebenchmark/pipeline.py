@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """Split-first pipeline execution with duck-typed components
 
 This module contains orchestration only: it calls the methods that the selected components

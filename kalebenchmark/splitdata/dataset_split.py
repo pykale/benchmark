@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """Domain-neutral partitioning for the ``splitter`` stage
 
 Every protocol here is a membership list: which records belong to which partition. That covers a

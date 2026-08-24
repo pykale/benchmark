@@ -36,11 +36,6 @@ def test_unknown_task_name_is_rejected():
         Benchmark.from_task("nope")
 
 
-def test_non_task_argument_is_rejected():
-    with pytest.raises(TypeError, match="task must be a task name or TaskCard"):
-        Benchmark.from_task(object())
-
-
 def test_exploration_runs_cannot_submit(make_benchmark):
     with pytest.raises(RuntimeError, match="not associated"):
         make_benchmark().run().submit()

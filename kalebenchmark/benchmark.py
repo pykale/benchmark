@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """Benchmark composition (user-facing API)
 
 :class:`Benchmark` stores one component per pipeline stage, resolves built-in name shortcuts,

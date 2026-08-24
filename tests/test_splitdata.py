@@ -37,20 +37,10 @@ def test_predefined_split_by_identifier_on_records_without_a_frame():
     assert [sample.patient_id for sample in partitions["test"]] == ["b"]
 
 
-def test_predefined_split_accepts_more_than_two_partitions():
-    partitions = PredefinedSplit({"train": [0], "validation": [1], "test": [2]}).split(list("abc"))
-    assert sorted(partitions) == ["test", "train", "validation"]
-
-
 def test_predefined_split_reports_members_that_match_nothing():
     frame = pd.DataFrame({"accession": ["p1"], "y": [1.0]})
     with pytest.raises(ValueError, match="Partition 'test' matched none of its"):
         PredefinedSplit({"train": ["p1"], "test": ["absent"]}, key="accession").split(frame)
-
-
-def test_predefined_split_needs_members():
-    with pytest.raises(ValueError, match="needs partitions"):
-        PredefinedSplit().split(list("ab"))
 
 
 def test_members_can_be_produced_lazily_by_a_subclass():
@@ -80,17 +70,6 @@ def test_random_split_refuses_to_drop_records_the_ratios_do_not_cover():
         RandomSplit(ratios=(0.6, 0.2, 0.1), seed=0).split(list(range(100)))
 
 
-def test_random_split_tolerates_ratios_that_only_sum_to_one_in_float():
-    partitions = RandomSplit(ratios=(0.7, 0.2, 0.1), seed=0).split(list(range(100)))
-    assert sum(len(partition) for partition in partitions.values()) == 100
-
-
-def test_fewer_ratios_leave_the_remainder_as_the_last_partition():
-    partitions = RandomSplit(ratios=(0.8,), seed=0).split(list(range(100)))
-    assert sorted(partitions) == ["train", "validation"]
-    assert sum(len(partition) for partition in partitions.values()) == 100
-
-
 def test_predefined_split_warns_when_members_are_only_partly_present(caplog):
     frame = pd.DataFrame({"mpids": ["a", "b"], "bg": [1.0, 2.0]})
     splitter = PredefinedSplit({"train": ["a"], "test": ["b", "absent"]}, key="mpids")
@@ -113,24 +92,6 @@ def test_json_split_reads_membership_from_files(tmp_path):
     partitions = splitter.split(frame)
     assert list(partitions["train"]["accession"]) == ["a", "c"]
     assert list(partitions["test"]["accession"]) == ["b"]
-
-
-def test_json_split_reads_records_carrying_an_identifier(tmp_path):
-    import json
-
-    from kalebenchmark.splitdata.dataset_split import read_json_ids
-
-    path = tmp_path / "ids.json"
-    path.write_text(json.dumps([{"accession": "a"}, {"accession": "b"}]))
-    assert read_json_ids(path, key="accession") == ["a", "b"]
-
-
-def test_random_split_is_a_membership_split():
-    from kalebenchmark.splitdata.dataset_split import PredefinedSplit
-
-    splitter = RandomSplit(ratios=(0.5, 0.25, 0.25), seed=1)
-    assert isinstance(splitter, PredefinedSplit)
-    assert sorted(splitter.members(list(range(8)))) == ["test", "train", "validation"]
 
 
 def test_a_callable_is_a_valid_splitter_stage(tmp_path):

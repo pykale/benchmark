@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """Access to the RealMat-BaG reference checkout
 
 The materials implementations that the benchmark wraps (CIF loading, crystal featurisation,
@@ -50,6 +46,43 @@ def data_root(root: Optional[PathLike] = None) -> Path:
     return Path(os.environ.get("REALMAT_BAG_ROOT", DEFAULT_DATA_ROOT)).expanduser()
 
 
+def _missing_message(missing: Path) -> str:
+    """Explain how to obtain the checkout, naming what was looked for."""
+    return (
+        f"The materials pipelines need the RealMat-BaG data and models, which are not on PyPI "
+        f"and were not found at '{missing}'. Get them with:\n"
+        "    git clone https://github.com/Shef-AIRE/bandgap-benchmark\n"
+        "    cd bandgap-benchmark && unzip cif_file.zip\n"
+        "Then run from beside that folder, or set REALMAT_BAG_ROOT to it. Benchmarks that use "
+        "no materials component need none of this."
+    )
+
+
+def materials_path(*parts: str, root: Optional[PathLike] = None) -> Path:
+    """Resolve a path inside the checkout, explaining how to get it when it is missing.
+
+    The data files are read directly rather than imported, so they never reach
+    :func:`require_realmat_bag`; this gives them the same guidance.
+
+    Args:
+        *parts (str): Path segments below the checkout root.
+        root (str or Path, optional): Checkout root. Defaults to ``REALMAT_BAG_ROOT`` or
+            ``./bandgap-benchmark``.
+
+    Returns:
+        Path: The resolved path.
+
+    Raises:
+        FileNotFoundError: If it does not exist.
+    """
+    path = data_root(root).joinpath(*parts)
+    if not path.exists():
+        error_msg = _missing_message(path)
+        logging.error(error_msg)
+        raise FileNotFoundError(error_msg)
+    return path
+
+
 def require_realmat_bag(root: Optional[PathLike] = None) -> Path:
     """Make the RealMat-BaG reference package importable.
 
@@ -68,10 +101,7 @@ def require_realmat_bag(root: Optional[PathLike] = None) -> Path:
     """
     root = data_root(root)
     if not (root / "realmat_bag").is_dir():
-        error_msg = (
-            f"RealMat-BaG checkout not found at '{root}'. Clone "
-            "https://github.com/Shef-AIRE/bandgap-benchmark or set REALMAT_BAG_ROOT."
-        )
+        error_msg = _missing_message(root / "realmat_bag")
         logging.error(error_msg)
         raise ImportError(error_msg)
     resolved = str(root.resolve())

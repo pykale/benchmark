@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """RealMat-BaG measurements for the ``dataset`` stage
 
 Reading the files is generic and lives in :class:`kalebenchmark.loaddata.json_datasets.JsonRecords`,
@@ -15,7 +11,7 @@ from typing import Optional, Sequence, Union
 import pandas as pd
 
 from kalebenchmark.loaddata.json_datasets import JsonRecords
-from kalebenchmark.utils.materials.realmat_bag import data_root, PathLike
+from kalebenchmark.utils.materials.realmat_bag import materials_path, PathLike
 
 
 def experimental_measurements(
@@ -46,9 +42,12 @@ def experimental_measurements(
         >>> experimental_measurements().columns.tolist()  # doctest: +SKIP
         ['mpids', 'bg']
     """
-    fine_tune = data_root(root) / "data" / "fine_tune"
     records = JsonRecords(
-        paths or [fine_tune / "train_data.json", fine_tune / "test_data.json"],
+        paths
+        or [
+            materials_path("data", "fine_tune", "train_data.json", root=root),
+            materials_path("data", "fine_tune", "test_data.json", root=root),
+        ],
         id_column="mpids",
         target_key=target_key,
     )

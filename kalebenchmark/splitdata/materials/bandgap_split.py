@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """RealMat-BaG published splits for the ``splitter`` stage
 
 Selecting records from membership lists is generic and lives in
@@ -13,7 +9,7 @@ by ``mpids``.
 from typing import Any, Dict, Optional
 
 from kalebenchmark.splitdata.dataset_split import JsonSplit
-from kalebenchmark.utils.materials.realmat_bag import data_root, PathLike
+from kalebenchmark.utils.materials.realmat_bag import materials_path, PathLike
 
 
 def feature_ood_split(
@@ -46,9 +42,8 @@ def feature_ood_split(
         >>> from kalebenchmark.splitdata.materials.bandgap_split import feature_ood_split
         >>> splitter = partial(feature_ood_split, root="bandgap-benchmark")  # doctest: +SKIP
     """
-    split_dir = data_root(root) / "data" / "splits_feature_ood"
     paths = {
-        "train": train_path or split_dir / "train_data.json",
-        "test": test_path or split_dir / "test_data.json",
+        "train": train_path or materials_path("data", "splits_feature_ood", "train_data.json", root=root),
+        "test": test_path or materials_path("data", "splits_feature_ood", "test_data.json", root=root),
     }
     return JsonSplit(paths, key="mpids").split(data)

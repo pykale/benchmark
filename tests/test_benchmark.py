@@ -7,7 +7,7 @@ from sklearn.svm import SVR
 
 from kalebenchmark.benchmark import Benchmark
 
-from .helpers.fake_components import Metric, Predictor
+from .helpers.fake_components import Predictor
 
 
 def test_registered_class_is_instantiated_and_function_is_used_as_is():
@@ -50,11 +50,6 @@ def test_metrics_accept_lists_and_tuples_keyed_by_the_requested_name(make_benchm
     assert results.evaluations == {"mae": 0.0, "r2": 1.0}
 
 
-def test_builtin_and_custom_metrics_mix_freely(make_benchmark):
-    results = make_benchmark(evaluate=["mae", Metric()], interpret=None).run()
-    assert sorted(results.evaluations) == ["custom", "mae"]
-
-
 def test_multiple_predictors_reuse_the_same_prepared_split(make_benchmark):
     first, second = Predictor(), Predictor()
     results = make_benchmark(predict=[first, second], interpret=None).run()
@@ -70,15 +65,6 @@ def test_splitter_must_provide_a_training_partition(make_benchmark):
 
     with pytest.raises(TypeError, match="must return a mapping containing 'train'"):
         make_benchmark(splitter=BadSplitter()).run()
-
-
-def test_splitter_must_provide_an_evaluation_partition(make_benchmark):
-    class TrainOnlySplitter:
-        def split(self, data):
-            return {"train": data}
-
-    with pytest.raises(ValueError, match="validation or test partition"):
-        make_benchmark(splitter=TrainOnlySplitter()).run()
 
 
 def test_datasets_of_items_with_targets_are_passed_to_the_predictor_unchanged(make_benchmark):

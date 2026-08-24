@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """Feature attribution for the ``interpret`` stage
 
 Both interpreters delegate: one to :mod:`shap`, the other to

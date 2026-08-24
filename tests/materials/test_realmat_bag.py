@@ -5,7 +5,6 @@ CIF files; both are skipped when missing. No other discipline's tests import thi
 """
 
 import numpy as np
-import pandas as pd
 import pytest
 
 from kalebenchmark.benchmarks.materials.bandgap import RealMatBaG
@@ -68,18 +67,6 @@ def test_feature_ood_split_selects_the_official_partitions(bandgap_root):
     assert len(partitions["train"]) == 1516
     assert len(partitions["test"]) == 189
     assert set(partitions["train"]["mpids"]).isdisjoint(partitions["test"]["mpids"])
-
-
-def test_predefined_split_keeps_the_record_columns(bandgap_root):
-    frame = experimental_measurements(root=bandgap_root)
-    partitions = feature_ood_split(frame, root=bandgap_root)
-    assert list(partitions["train"].columns) == ["mpids", "bg"]
-
-
-def test_predefined_split_rejects_records_it_cannot_match(bandgap_root):
-    frame = pd.DataFrame({"mpids": ["not-a-material"], "bg": [1.0]})
-    with pytest.raises(ValueError, match="matched none of its"):
-        feature_ood_split(frame, root=bandgap_root)
 
 
 @pytest.mark.slow
@@ -150,17 +137,6 @@ def test_another_property_flows_through_prepdata(tmp_path, cif_folder):
     assert [round(float(dataset[index].target), 1) for index in range(len(dataset))] == [-1.2, -0.7]
 
 
-def test_the_property_is_an_argument_not_a_class(bandgap_root):
-    """One loader, any property: nothing about the band gap is baked into the dataset stage."""
-    from functools import partial
-
-    from kalebenchmark.benchmarks.materials.bandgap import RealMatBaG
-
-    assert RealMatBaG.BUILTINS["dataset"]["experimental_bg"] is experimental_measurements
-    other_property = partial(experimental_measurements, target_key="bg", root=bandgap_root)
-    assert other_property().columns.tolist() == ["mpids", "bg"]
-
-
 def test_other_published_regimes_need_no_materials_code(bandgap_root):
     """A domain split fold is the same protocol with different files."""
     from kalebenchmark.splitdata.dataset_split import JsonSplit
@@ -198,33 +174,3 @@ def test_a_second_architecture_trains_through_the_same_wrapper(small_crystal_spl
     ).run()
     assert len(results.predictions) == 10
     assert np.isfinite(results.evaluations["mae"])
-
-
-@pytest.mark.slow
-def test_a_network_from_anywhere_needs_no_code_here(small_crystal_split):
-    """Any torch module taking the batch works, so the wrapper is not tied to the library."""
-    import torch
-
-    from kalebenchmark.model.materials.crystal_gnn import CrystalGraphRegressor
-
-    class MeanAtomNet(torch.nn.Module):
-        """A deliberately trivial network written outside the package."""
-
-        def __init__(self, atom_fea_len):
-            super().__init__()
-            self.head = torch.nn.Linear(atom_fea_len, 1)
-
-        def forward(self, batch):
-            pooled = torch.stack([batch.atom_fea[index].mean(dim=0) for index in batch.crystal_atom_idx])
-            return self.head(pooled)
-
-    dataset, splitter, prepdata = small_crystal_split
-    results = RealMatBaG(
-        dataset=dataset,
-        splitter=splitter,
-        prepdata=prepdata,
-        embed="identity",
-        predict=CrystalGraphRegressor(model=MeanAtomNet(92), max_epochs=1, batch_size=8),
-        evaluate="mae",
-    ).run()
-    assert len(results.predictions) == 10

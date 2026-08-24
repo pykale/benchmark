@@ -1,7 +1,3 @@
-# =============================================================================
-# Author: Haolin Wang, LWang0101@outlook.com
-# =============================================================================
-
 """RealMat-BaG metrics for the ``evaluate`` stage
 
 Only metrics with no existing implementation appear here. ``mae``, ``mse`` and ``r2`` resolve

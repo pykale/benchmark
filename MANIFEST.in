@@ -1,0 +1,7 @@
+include LICENSE
+include README.md
+recursive-include kalebenchmark *.md
+prune tests
+prune examples
+prune docs
+prune bandgap-benchmark
