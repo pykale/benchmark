@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+checkpoints/
+lightning_logs/
+
+# The RealMat-BaG checkout is a separate repository, cloned beside this one.
+/bandgap-benchmark/
