@@ -10,8 +10,10 @@ dataset=experimental_bg -> splitter=random_split -> prepdata=cif
 
 ## Usage
 
+Run from the repository root:
+
 ```bash
-python main.py --data-root ../../bandgap-benchmark
+python -m examples.simple_benchmark.main --data-root bandgap-benchmark
 ```
 
 `--data-root` is optional when the RealMat-BaG checkout sits at `./bandgap-benchmark` or

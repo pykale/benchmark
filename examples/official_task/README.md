@@ -12,6 +12,8 @@ ValueError: 'splitter' is fixed by TaskCard 'experimental_bg_ood' and cannot be 
 
 ## Usage
 
+Run from the repository root:
+
 ```bash
-python main.py --task experimental_bg_ood --data-root ../../bandgap-benchmark
+python -m examples.official_task.main --task experimental_bg_ood --data-root bandgap-benchmark
 ```

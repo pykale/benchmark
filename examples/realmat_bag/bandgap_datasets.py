@@ -1,6 +1,6 @@
 """RealMat-BaG measurements for the ``dataset`` stage
 
-Reading the files is generic and lives in :class:`kalebenchmark.loaddata.json_datasets.JsonRecords`,
+Reading the files is handled by :class:`examples.realmat_bag.json_datasets.JsonRecords`,
 where the identifier field and the property are both arguments. Nothing here is specific to a
 property: this module only names where the published files are and that a material is identified
 by ``mpids``.
@@ -10,8 +10,8 @@ from typing import Optional, Sequence, Union
 
 import pandas as pd
 
-from kalebenchmark.loaddata.json_datasets import JsonRecords
-from kalebenchmark.utils.materials.realmat_bag import materials_path, PathLike
+from examples.realmat_bag.json_datasets import JsonRecords
+from examples.realmat_bag.realmat_bag import materials_path, PathLike
 
 
 def experimental_measurements(
@@ -23,7 +23,7 @@ def experimental_measurements(
 
     A dataset stage may be any callable returning the records, so this needs no class of its own:
     it supplies the published paths and the ``mpids`` identifier, and hands the rest to
-    :class:`~kalebenchmark.loaddata.json_datasets.JsonRecords`.
+    :class:`~examples.realmat_bag.json_datasets.JsonRecords`.
 
     Args:
         target_key (str, optional): Property to read as the target. Defaults to "bg", the only
@@ -38,7 +38,7 @@ def experimental_measurements(
         pandas.DataFrame: One row per material, with ``mpids`` and target columns.
 
     Examples:
-        >>> from kalebenchmark.loaddata.materials.bandgap_datasets import experimental_measurements
+        >>> from examples.realmat_bag.bandgap_datasets import experimental_measurements
         >>> experimental_measurements().columns.tolist()  # doctest: +SKIP
         ['mpids', 'bg']
     """

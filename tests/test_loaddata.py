@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from kalebenchmark.loaddata.json_datasets import JsonRecords, load_json_records
+from examples.realmat_bag.json_datasets import JsonRecords, load_json_records
 
 
 @pytest.fixture

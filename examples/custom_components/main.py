@@ -4,7 +4,7 @@ The custom descriptor, predictor and metric are ordinary objects. They are not
 registered anywhere and no benchmark source file has to change for them to run.
 
 Usage:
-    python examples/custom_components/main.py --data-root bandgap-benchmark
+    python -m examples.custom_components.main --data-root bandgap-benchmark
 """
 
 import argparse
@@ -12,7 +12,7 @@ import os
 
 import numpy as np
 
-from kalebenchmark.benchmarks.materials.bandgap import RealMatBaG
+from examples.realmat_bag import RealMatBaG
 
 
 class ElementCountDescriptor:

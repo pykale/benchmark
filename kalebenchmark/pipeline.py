@@ -9,8 +9,6 @@ evaluation partition.
 import inspect
 from typing import Any, Callable, Dict, Sequence, Tuple
 
-import numpy as np
-
 
 def _invoke(function: Callable, *args: Any, **context: Any) -> Any:
     """Call ``function`` with the subset of ``context`` that it declares."""
@@ -67,7 +65,7 @@ def _xy(value: Any) -> Tuple[Any, Any]:
         return value.X, value.y
     # Checked before the pair form: a dataset of two items is not an (x, y) pair.
     if _has_targets(value):
-        return value, np.asarray([np.asarray(item.target).ravel()[0] for item in value], dtype=float)
+        return value, [_scalar_target(item.target) for item in value]
     if isinstance(value, (tuple, list)) and len(value) == 2:
         return value[0], value[1]
     raise TypeError(
@@ -82,6 +80,18 @@ def _has_targets(value: Any) -> bool:
         return bool(len(value)) and hasattr(value[0], "target")
     except (AttributeError, KeyError, IndexError, TypeError):
         return False
+
+
+def _scalar_target(target: Any) -> float:
+    """Convert a one-value target to a Python float without a numeric-library dependency."""
+    if hasattr(target, "item"):
+        try:
+            return float(target.item())
+        except (RuntimeError, ValueError):
+            pass
+    if isinstance(target, (list, tuple)) and len(target) == 1:
+        return float(target[0])
+    return float(target)
 
 
 def _name(component: Any, index: int) -> str:

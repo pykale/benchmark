@@ -5,12 +5,12 @@ import pytest
 
 from kalebenchmark import Benchmark, TaskCard
 
-from .helpers.fake_components import Dataset, Embed, Interpreter, Predictor, PrepData, Splitter
+from .helpers.fake_components import Dataset, Embed, Interpreter, Metric, Predictor, PrepData, Splitter
 
 
 @pytest.fixture
 def card():
-    return TaskCard("track", dataset=Dataset(), splitter=Splitter(), evaluate="mae")
+    return TaskCard("track", dataset=Dataset(), splitter=Splitter(), evaluate=Metric())
 
 
 @pytest.mark.parametrize("stage", ["dataset", "splitter", "evaluate"])
@@ -45,7 +45,7 @@ def test_official_runs_can_submit(card):
     results = Benchmark.from_task(card, prepdata=PrepData(), embed=Embed(), predict=Predictor()).run()
     payload = results.submit()
     assert payload["task"] == "track"
-    assert payload["evaluations"] == {"mae": 0.0}
+    assert payload["evaluations"] == {"custom": 0.0}
 
 
 def test_submit_uses_stored_predictions_without_predicting_again(card):

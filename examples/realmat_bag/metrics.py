@@ -11,7 +11,7 @@ from typing import Iterable
 
 import numpy as np
 
-from kalebenchmark.utils.materials.realmat_bag import require_realmat_bag
+from examples.realmat_bag.realmat_bag import require_realmat_bag
 
 
 def mean_relative_error(y_true: Iterable[float], y_pred: Iterable[float]) -> float:

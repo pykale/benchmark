@@ -9,6 +9,8 @@ model name.
 
 ## Usage
 
+Run from the repository root:
+
 ```bash
-python main.py --data-root ../../bandgap-benchmark
+python -m examples.custom_components.main --data-root bandgap-benchmark
 ```

@@ -18,19 +18,13 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-dependencies = ["numpy", "pandas", "pykale", "scikit-learn"]
+dependencies = ["pykale"]
 
 [project.optional-dependencies]
-# torch and pytorch-lightning are already required by pykale, so only pymatgen is added here. The
-# materials pipelines also need the RealMat-BaG checkout, which is not on PyPI; the README and the
-# error raised by kalebenchmark.utils.materials.realmat_bag explain how to get it.
-materials = ["pymatgen"]
-interpret = ["shap"]
 dev = ["pytest"]
 
 [project.urls]
 Homepage = "https://github.com/pykale/pykale"
-"RealMat-BaG data" = "https://github.com/Shef-AIRE/bandgap-benchmark"
 
 [tool.setuptools.packages.find]
 include = ["kalebenchmark*"]

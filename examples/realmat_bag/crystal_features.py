@@ -14,7 +14,7 @@ from typing import Any, Optional, Tuple
 
 import numpy as np
 
-from kalebenchmark.utils.materials.realmat_bag import PathLike, require_realmat_bag
+from examples.realmat_bag.realmat_bag import PathLike, require_realmat_bag
 
 
 class CrystalFeatures:

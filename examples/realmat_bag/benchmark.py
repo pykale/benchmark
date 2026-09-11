@@ -11,22 +11,40 @@ Reference:
 
 from typing import Any, Dict
 
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.preprocessing import FunctionTransformer
+from sklearn.svm import SVR
+
+from examples.realmat_bag.bandgap_datasets import experimental_measurements
+from examples.realmat_bag.bandgap_split import feature_ood_split
+from examples.realmat_bag.crystal_features import CrystalFeatures
+from examples.realmat_bag.crystal_gnn import CrystalGraphRegressor
+from examples.realmat_bag.crystal_graph import CIFPrepData
+from examples.realmat_bag.feature_attribution import PermutationImportance, ShapInterpreter
+from examples.realmat_bag.metrics import mean_relative_error
 from kalebenchmark.benchmark import Benchmark, GENERIC_BUILTINS, merge_builtins
-from kalebenchmark.embed.materials.crystal_features import CrystalFeatures
-from kalebenchmark.evaluation.materials.metrics import mean_relative_error
-from kalebenchmark.loaddata.materials.bandgap_datasets import experimental_measurements
-from kalebenchmark.model.materials.crystal_gnn import CrystalGraphRegressor
-from kalebenchmark.prepdata.materials.crystal_graph import CIFPrepData
-from kalebenchmark.splitdata.materials.bandgap_split import feature_ood_split
 from kalebenchmark.task import TaskCard
 
 MATERIALS_BUILTINS: Dict[str, Dict[str, Any]] = {
     "dataset": {"experimental_bg": experimental_measurements},
     "splitter": {"feature_ood_split": feature_ood_split},
     "prepdata": {"cif": CIFPrepData},
-    "embed": {"crystal_features": CrystalFeatures},
-    "predict": {"cgcnn": CrystalGraphRegressor},
-    "evaluate": {"mrae": mean_relative_error},
+    "embed": {"identity": FunctionTransformer, "crystal_features": CrystalFeatures},
+    "predict": {
+        "svr": SVR,
+        "random_forest": RandomForestRegressor,
+        "linear_regression": LinearRegression,
+        "cgcnn": CrystalGraphRegressor,
+    },
+    "evaluate": {
+        "mae": mean_absolute_error,
+        "mse": mean_squared_error,
+        "r2": r2_score,
+        "mrae": mean_relative_error,
+    },
+    "interpret": {"shap": ShapInterpreter, "permutation_importance": PermutationImportance},
 }
 
 MATERIALS_TASKS: Dict[str, TaskCard] = {
@@ -64,7 +82,7 @@ class RealMatBaG(Benchmark):
         interpret: Defaults to no interpretation.
 
     Examples:
-        >>> from kalebenchmark.benchmarks.materials.bandgap import RealMatBaG
+        >>> from examples.realmat_bag import RealMatBaG
         >>> RealMatBaG(predict="random_forest").run()  # doctest: +SKIP
         >>> RealMatBaG.from_task("experimental_bg_ood", predict="svr").run()  # doctest: +SKIP
     """

@@ -1,7 +1,7 @@
 """Crystal graph networks for the ``predict`` stage
 
 Running the training is domain neutral and lives in
-:class:`kalebenchmark.model.torch_trainer.TorchRegressor`. This module only injects the three
+:class:`examples.realmat_bag.torch_trainer.TorchRegressor`. This module only injects the three
 things that are specific to crystals, all of which the RealMat-BaG reference already implements:
 its ``MaterialsTrainer`` (the loss, the metrics and the optimisers), its collate function, and
 its networks. Nothing here trains, batches or defines a loss.
@@ -16,8 +16,8 @@ Classical estimators need no module here at all. Their shortcuts resolve straigh
 
 from typing import Any, Callable, Dict, Optional, Union
 
-from kalebenchmark.model.torch_trainer import TorchRegressor
-from kalebenchmark.utils.materials.realmat_bag import PathLike, require_realmat_bag
+from examples.realmat_bag.realmat_bag import PathLike, require_realmat_bag
+from examples.realmat_bag.torch_trainer import TorchRegressor
 
 
 def build_cgcnn(sample: Any, atom_fea_len: int = 64, n_conv: int = 3, h_fea_len: int = 128, n_h: int = 1) -> Any:
@@ -94,12 +94,12 @@ class CrystalGraphRegressor(TorchRegressor):
         layer_freeze (str, optional): Freezing mode of the Lightning module. Defaults to "none".
         root (str or Path, optional): Checkout root. Defaults to ``REALMAT_BAG_ROOT`` or
             ``./bandgap-benchmark``.
-        **kwargs: Passed to :class:`~kalebenchmark.model.torch_trainer.TorchRegressor`, which
+        **kwargs: Passed to :class:`~examples.realmat_bag.torch_trainer.TorchRegressor`, which
             documents ``max_epochs``, ``batch_size``, ``accelerator``, ``devices`` and
             ``num_workers``.
 
     Examples:
-        >>> from kalebenchmark.model.materials.crystal_gnn import CrystalGraphRegressor
+        >>> from examples.realmat_bag.crystal_gnn import CrystalGraphRegressor
         >>> CrystalGraphRegressor(model="leftnet", max_epochs=50)  # doctest: +SKIP
     """
 

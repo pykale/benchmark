@@ -1,4 +1,4 @@
-"""Feature attribution for the ``interpret`` stage
+"""Feature attribution components used by the RealMat-BaG example.
 
 Both interpreters delegate: one to :mod:`shap`, the other to
 :func:`sklearn.inspection.permutation_importance`. Neither computes attributions itself.

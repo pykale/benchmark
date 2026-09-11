@@ -1,4 +1,4 @@
-"""Domain-neutral record access for the ``dataset`` stage
+"""JSON record access used by the RealMat-BaG example.
 
 Measurements are often published as ``{identifier: {property: value}}`` JSON. This module reads
 that shape into an identifier/target frame, with the identifier field and the property both given

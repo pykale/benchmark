@@ -2,17 +2,27 @@
 
 import numpy as np
 import pytest
-from sklearn.metrics import mean_absolute_error
-from sklearn.svm import SVR
 
-from kalebenchmark.benchmark import Benchmark
+from kalebenchmark.benchmark import Benchmark, GENERIC_BUILTINS, merge_builtins
 
 from .helpers.fake_components import Predictor
 
 
 def test_registered_class_is_instantiated_and_function_is_used_as_is():
-    assert isinstance(Benchmark.resolve("predict", "svr"), SVR)
-    assert Benchmark.resolve("evaluate", "mae") is mean_absolute_error
+    class RegisteredPredictor(Predictor):
+        pass
+
+    def registered_metric(targets, predictions):
+        return 0.0
+
+    class RegisteredBenchmark(Benchmark):
+        BUILTINS = merge_builtins(
+            GENERIC_BUILTINS,
+            {"predict": {"registered": RegisteredPredictor}, "evaluate": {"registered": registered_metric}},
+        )
+
+    assert isinstance(RegisteredBenchmark.resolve("predict", "registered"), RegisteredPredictor)
+    assert RegisteredBenchmark.resolve("evaluate", "registered") is registered_metric
 
 
 def test_custom_objects_pass_through_without_registration():
@@ -44,9 +54,15 @@ def test_preprocessing_and_embedding_are_fitted_on_the_training_partition_only(m
     np.testing.assert_array_equal(benchmark.components["embed"].training_targets, np.arange(8) * 2)
 
 
-@pytest.mark.parametrize("metrics", [["mae", "r2"], ("mae", "r2")])
-def test_metrics_accept_lists_and_tuples_keyed_by_the_requested_name(make_benchmark, metrics):
-    results = make_benchmark(evaluate=metrics, interpret=None).run()
+@pytest.mark.parametrize("container", [list, tuple])
+def test_metrics_accept_lists_and_tuples_keyed_by_the_requested_name(make_benchmark, container):
+    def mae(targets, predictions):
+        return float(np.mean(np.abs(targets - predictions)))
+
+    def r2(targets, predictions):
+        return 1.0
+
+    results = make_benchmark(evaluate=container((mae, r2)), interpret=None).run()
     assert results.evaluations == {"mae": 0.0, "r2": 1.0}
 
 

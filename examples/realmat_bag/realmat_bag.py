@@ -21,7 +21,7 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from kalebenchmark.utils.typing import PathLike  # re-exported for the materials modules
+from kalebenchmark.utils.typing import PathLike
 
 # Default location of the RealMat-BaG checkout providing the materials data and models.
 DEFAULT_DATA_ROOT = "bandgap-benchmark"

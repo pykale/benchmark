@@ -7,10 +7,10 @@ CIF files; both are skipped when missing. No other discipline's tests import thi
 import numpy as np
 import pytest
 
-from kalebenchmark.benchmarks.materials.bandgap import RealMatBaG
-from kalebenchmark.loaddata.materials.bandgap_datasets import experimental_measurements
-from kalebenchmark.prepdata.materials.crystal_graph import CIFPrepData
-from kalebenchmark.splitdata.materials.bandgap_split import feature_ood_split
+from examples.realmat_bag import RealMatBaG
+from examples.realmat_bag.bandgap_datasets import experimental_measurements
+from examples.realmat_bag.bandgap_split import feature_ood_split
+from examples.realmat_bag.crystal_graph import CIFPrepData
 
 
 @pytest.fixture
@@ -87,7 +87,7 @@ def test_classical_crystal_pipeline_end_to_end(small_crystal_split):
 @pytest.mark.slow
 def test_crystal_graph_regressor_end_to_end(small_crystal_split):
     dataset, splitter, prepdata = small_crystal_split
-    from kalebenchmark.model.materials.crystal_gnn import CrystalGraphRegressor
+    from examples.realmat_bag.crystal_gnn import CrystalGraphRegressor
 
     results = RealMatBaG(
         dataset=dataset,
@@ -126,7 +126,7 @@ def test_another_property_flows_through_prepdata(tmp_path, cif_folder):
     """The measured property is an argument, so it must not be hard-coded downstream."""
     import json
 
-    from kalebenchmark.prepdata.materials.crystal_graph import CIFPrepData
+    from examples.realmat_bag.crystal_graph import CIFPrepData
 
     path = tmp_path / "formation.json"
     path.write_text(json.dumps({"mp-571164": {"e_form": -1.2}, "mp-5986": {"e_form": -0.7}}))
@@ -156,7 +156,7 @@ def test_other_published_regimes_need_no_materials_code(bandgap_root):
 @pytest.mark.slow
 def test_a_second_architecture_trains_through_the_same_wrapper(small_crystal_split):
     """Batching and training are architecture independent; only the network differs."""
-    from kalebenchmark.model.materials.crystal_gnn import CrystalGraphRegressor
+    from examples.realmat_bag.crystal_gnn import CrystalGraphRegressor
 
     dataset, splitter, prepdata = small_crystal_split
     results = RealMatBaG(

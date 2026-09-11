@@ -6,8 +6,10 @@ unchanged (`embed="identity"`) and CGCNN is trained through the RealMat-BaG Ligh
 
 ## Usage
 
+Run from the repository root:
+
 ```bash
-python main.py --max-epochs 2 --limit 200
+python -m examples.crystal_gnn.main --max-epochs 2 --limit 200
 ```
 
 The defaults are sized as a smoke test. Accuracy at two epochs on 200 materials is not

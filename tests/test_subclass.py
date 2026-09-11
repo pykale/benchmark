@@ -18,7 +18,7 @@ class DomainBenchmark(Benchmark):
     """A minimal discipline: its own shortcuts, tasks and defaults."""
 
     BUILTINS = merge_builtins(GENERIC_BUILTINS, {"dataset": {"toy": Dataset}, "splitter": {"toy_split": Splitter}})
-    TASKS = {"toy_task": TaskCard("toy_task", dataset="toy", splitter="toy_split", evaluate="mae")}
+    TASKS = {"toy_task": TaskCard("toy_task", dataset="toy", splitter="toy_split", evaluate=Metric())}
 
     def __init__(self, dataset="toy", splitter="toy_split", prepdata=None, embed=None, **kwargs):
         super().__init__(dataset=dataset, splitter=splitter, prepdata=prepdata, embed=embed, **kwargs)
@@ -26,7 +26,7 @@ class DomainBenchmark(Benchmark):
 
 def test_subclass_shortcuts_extend_rather_than_replace_the_generic_ones():
     assert isinstance(DomainBenchmark.resolve("dataset", "toy"), Dataset)
-    assert DomainBenchmark.resolve("predict", "svr") is not None
+    assert DomainBenchmark.resolve("splitter", "random_split") is not None
 
 
 def test_base_class_does_not_know_the_discipline():

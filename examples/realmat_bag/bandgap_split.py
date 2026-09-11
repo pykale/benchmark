@@ -8,8 +8,8 @@ by ``mpids``.
 
 from typing import Any, Dict, Optional
 
+from examples.realmat_bag.realmat_bag import materials_path, PathLike
 from kalebenchmark.splitdata.dataset_split import JsonSplit
-from kalebenchmark.utils.materials.realmat_bag import materials_path, PathLike
 
 
 def feature_ood_split(
@@ -39,7 +39,7 @@ def feature_ood_split(
 
     Examples:
         >>> from functools import partial
-        >>> from kalebenchmark.splitdata.materials.bandgap_split import feature_ood_split
+        >>> from examples.realmat_bag.bandgap_split import feature_ood_split
         >>> splitter = partial(feature_ood_split, root="bandgap-benchmark")  # doctest: +SKIP
     """
     paths = {

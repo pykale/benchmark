@@ -4,13 +4,13 @@ The task card fixes the dataset, the split and the metrics. Everything else is
 open, and only benchmarks built through ``from_task`` can be submitted.
 
 Usage:
-    python examples/official_task/main.py --data-root bandgap-benchmark
+    python -m examples.official_task.main --data-root bandgap-benchmark
 """
 
 import argparse
 import os
 
-from kalebenchmark.benchmarks.materials.bandgap import RealMatBaG
+from examples.realmat_bag import RealMatBaG
 
 
 def arg_parse():

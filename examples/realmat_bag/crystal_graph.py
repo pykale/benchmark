@@ -11,7 +11,7 @@ from typing import Any, Optional
 
 import pandas as pd
 
-from kalebenchmark.utils.materials.realmat_bag import data_root, PathLike, require_realmat_bag
+from examples.realmat_bag.realmat_bag import data_root, PathLike, require_realmat_bag
 
 
 class CIFPrepData:

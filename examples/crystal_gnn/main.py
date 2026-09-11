@@ -5,15 +5,15 @@ representation stays as crystal graphs (``embed="identity"``) and the predictor
 is CGCNN, trained by the RealMat-BaG Lightning trainer.
 
 Usage:
-    python examples/crystal_gnn/main.py --max-epochs 2 --limit 200
+    python -m examples.crystal_gnn.main --max-epochs 2 --limit 200
 """
 
 import argparse
 import os
 
-from kalebenchmark.benchmarks.materials.bandgap import RealMatBaG
-from kalebenchmark.loaddata.materials.bandgap_datasets import experimental_measurements
-from kalebenchmark.model.materials.crystal_gnn import CrystalGraphRegressor
+from examples.realmat_bag import RealMatBaG
+from examples.realmat_bag.bandgap_datasets import experimental_measurements
+from examples.realmat_bag.crystal_gnn import CrystalGraphRegressor
 
 
 class BandgapSubset:

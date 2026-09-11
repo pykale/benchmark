@@ -4,12 +4,12 @@ Reads left to right as which data, how split, how prepared, how represented,
 how predicted and how evaluated.
 
 Usage:
-    python examples/simple_benchmark/main.py --data-root bandgap-benchmark
+    python -m examples.simple_benchmark.main --data-root bandgap-benchmark
 """
 
 import argparse
 
-from kalebenchmark.benchmarks.materials.bandgap import RealMatBaG
+from examples.realmat_bag import RealMatBaG
 
 
 def arg_parse():

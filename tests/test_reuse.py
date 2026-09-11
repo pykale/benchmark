@@ -16,9 +16,7 @@ import pytest
 import kale.loaddata.dataset_access
 import kale.utils.seed
 import kalebenchmark
-from kalebenchmark.embed.materials import crystal_features
-from kalebenchmark.evaluation.materials import metrics
-from kalebenchmark.prepdata.materials import crystal_graph
+from examples.realmat_bag import crystal_features, crystal_graph, metrics
 from kalebenchmark.splitdata import dataset_split
 
 PACKAGE = Path(kalebenchmark.__file__).parent

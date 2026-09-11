@@ -21,7 +21,7 @@ class TorchRegressor:
     """Fit a Lightning module on a dataset, then predict one value per record.
 
     A subclass overrides :meth:`build_module` and :meth:`collate` when those depend on a
-    discipline; see :mod:`kalebenchmark.model.materials.crystal_gnn`.
+    discipline; see :mod:`examples.realmat_bag.crystal_gnn`.
 
     Args:
         module (optional): A Lightning module, or a callable taking one record and returning one.

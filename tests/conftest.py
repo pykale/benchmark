@@ -2,8 +2,8 @@
 
 import pytest
 
+from examples.realmat_bag.realmat_bag import data_root, require_realmat_bag
 from kalebenchmark import Benchmark
-from kalebenchmark.utils.materials.realmat_bag import data_root, require_realmat_bag
 
 from .helpers.fake_components import Dataset, Embed, Interpreter, Metric, Predictor, PrepData, Splitter
 
